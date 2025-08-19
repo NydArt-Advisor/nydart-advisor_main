@@ -1,10 +1,10 @@
 {
   "name": "nydart_advisor",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "scripts/start-all.js",
   "scripts": {
-    "dev": "node start-all.js",
-    "start:all": "node start-all.js",
+    "dev": "node scripts/start-all.js",
+    "start:all": "node scripts/start-all.js",
     "test": "node scripts/run-test-book.js",
     "test:all": "node scripts/run-test-book.js",
     "test:book": "node scripts/run-test-book.js",
