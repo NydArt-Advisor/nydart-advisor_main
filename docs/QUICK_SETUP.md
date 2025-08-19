@@ -56,12 +56,12 @@ cd nydart-advisor-main
 
 # Clone each service
 git clone https://github.com/NydArt-Advisor/front.git
-git clone https://github.com/NydArt-Advisor/auth-service.git auth_service
-git clone https://github.com/NydArt-Advisor/database-service.git db_service
-git clone https://github.com/NydArt-Advisor/ai-service.git ai_service
-git clone https://github.com/NydArt-Advisor/payment-service.git payment_service
-git clone https://github.com/NydArt-Advisor/notification-service.git notification_service
-git clone https://github.com/NydArt-Advisor/metrics-service.git metrics_service
+git clone https://github.com/NydArt-Advisor/auth_service.git auth_service
+git clone https://github.com/NydArt-Advisor/db_service.git db_service
+git clone https://github.com/NydArt-Advisor/ai_service.git ai_service
+git clone https://github.com/NydArt-Advisor/payment_service.git payment_service
+git clone https://github.com/NydArt-Advisor/notification_service.git notification_service
+git clone https://github.com/NydArt-Advisor/metrics_service.git metrics_service
 
 # Install dependencies
 npm install
@@ -83,10 +83,10 @@ npm run test:all
 # Check service health
 curl http://localhost:5001/api/health  # Database service
 curl http://localhost:5002/api/health  # Auth service
-curl http://localhost:5003/api/health  # AI service
-curl http://localhost:5004/api/health  # Payment service
-curl http://localhost:5005/api/health  # Notification service
-curl http://localhost:5006/api/health  # Metrics service
+curl http://localhost:5000/api/health  # AI service
+curl http://localhost:3004/api/health  # Payment service
+curl http://localhost:4003/api/health  # Notification service
+curl http://localhost:5005/api/health  # Metrics service
 ```
 
 ## 📚 Next Steps
@@ -109,10 +109,10 @@ curl http://localhost:5006/api/health  # Metrics service
 | Frontend | 3000 | Next.js React application |
 | Database | 5001 | MongoDB data management |
 | Auth | 5002 | JWT + OAuth authentication |
-| AI | 5003 | OpenAI GPT-4 Vision integration |
-| Payment | 5004 | Stripe + PayPal processing |
-| Notification | 5005 | Email + SMS notifications |
-| Metrics | 5006 | Prometheus monitoring |
+| AI | 5000 | OpenAI GPT-4 Vision integration |
+| Payment | 3004 | Stripe + PayPal processing |
+| Notification | 4003 | Email + SMS notifications |
+| Metrics | 5005 | Prometheus monitoring |
 
 ## 🔄 Development Workflow
 

@@ -13,12 +13,12 @@ The **NydArt-Advisor** organization contains the following repositories:
 
 ### 🔧 Service Repositories
 - **`front`** - Frontend service (Next.js 14 React application)
-- **`auth-service`** - Authentication service (JWT + OAuth)
-- **`database-service`** - Database service (MongoDB management)
-- **`ai-service`** - AI service (OpenAI GPT-4 Vision integration)
-- **`payment-service`** - Payment service (Stripe + PayPal)
-- **`notification-service`** - Notification service (Email + SMS)
-- **`metrics-service`** - Metrics service (Prometheus monitoring)
+- **`auth_service`** - Authentication service (JWT + OAuth)
+- **`db_service`** - Database service (MongoDB management)
+- **`ai_service`** - AI service (OpenAI GPT-4 Vision integration)
+- **`payment_service`** - Payment service (Stripe + PayPal)
+- **`notification_service`** - Notification service (Email + SMS)
+- **`metrics_service`** - Metrics service (Prometheus monitoring)
 
 ## 🚀 For Future Developers
 
@@ -54,12 +54,12 @@ cd nydart-advisor-main
 
 # Clone each service repository
 git clone https://github.com/NydArt-Advisor/front.git
-git clone https://github.com/NydArt-Advisor/auth-service.git auth_service
-git clone https://github.com/NydArt-Advisor/database-service.git db_service
-git clone https://github.com/NydArt-Advisor/ai-service.git ai_service
-git clone https://github.com/NydArt-Advisor/payment-service.git payment_service
-git clone https://github.com/NydArt-Advisor/notification-service.git notification_service
-git clone https://github.com/NydArt-Advisor/metrics-service.git metrics_service
+git clone https://github.com/NydArt-Advisor/auth_service.git auth_service
+git clone https://github.com/NydArt-Advisor/db_service.git db_service
+git clone https://github.com/NydArt-Advisor/ai_service.git ai_service
+git clone https://github.com/NydArt-Advisor/payment_service.git payment_service
+git clone https://github.com/NydArt-Advisor/notification_service.git notification_service
+git clone https://github.com/NydArt-Advisor/metrics_service.git metrics_service
 
 # Install dependencies
 npm install
@@ -267,15 +267,15 @@ When all services are running:
 - **Frontend**: http://localhost:3000
 - **Auth Service**: http://localhost:5002
 - **Database Service**: http://localhost:5001
-- **AI Service**: http://localhost:5003
-- **Payment Service**: http://localhost:5004
-- **Notification Service**: http://localhost:5005
-- **Metrics Service**: http://localhost:5006
+- **AI Service**: http://localhost:5000
+- **Payment Service**: http://localhost:3004
+- **Notification Service**: http://localhost:4003
+- **Metrics Service**: http://localhost:5005
 
 ## 📊 Monitoring and Analytics
 
 ### Metrics Dashboard
-- Access: http://localhost:5006
+- Access: http://localhost:5005
 - Monitor service health and performance
 - Track user interactions and system usage
 
