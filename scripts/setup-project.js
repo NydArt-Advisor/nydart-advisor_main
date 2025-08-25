@@ -168,10 +168,10 @@ PORT=3000
 # Service URLs (for local development)
 AUTH_SERVICE_URL=http://localhost:5002
 DB_SERVICE_URL=http://localhost:5001
-AI_SERVICE_URL=http://localhost:5003
-PAYMENT_SERVICE_URL=http://localhost:5004
-NOTIFICATION_SERVICE_URL=http://localhost:5005
-METRICS_SERVICE_URL=http://localhost:5006
+AI_SERVICE_URL=http://localhost:5000
+PAYMENT_SERVICE_URL=http://localhost:3004
+NOTIFICATION_SERVICE_URL=http://localhost:4003
+METRICS_SERVICE_URL=http://localhost:5005
 
 # Database Configuration
 MONGODB_URI=mongodb://localhost:27017/nydart_advisor
@@ -425,10 +425,10 @@ const showNextSteps = () => {
     log('   Frontend: http://localhost:3000', 'info');
     log('   Auth Service: http://localhost:5002', 'info');
     log('   Database Service: http://localhost:5001', 'info');
-    log('   AI Service: http://localhost:5003', 'info');
-    log('   Payment Service: http://localhost:5004', 'info');
-    log('   Notification Service: http://localhost:5005', 'info');
-    log('   Metrics Service: http://localhost:5006', 'info');
+    log('   AI Service: http://localhost:5000', 'info');
+    log('   Payment Service: http://localhost:3004', 'info');
+    log('   Notification Service: http://localhost:4003', 'info');
+    log('   Metrics Service: http://localhost:5005', 'info');
     log('\n📚 Documentation:', 'info');
     log('   - README.md: Quick start guide', 'info');
     log('   - docs/TECHNICAL_DOCUMENTATION.md: Complete technical documentation', 'info');

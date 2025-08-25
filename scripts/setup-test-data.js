@@ -67,10 +67,10 @@ const TEST_DATA = {
 const SERVICES = {
     auth: { port: 5002, baseUrl: 'http://localhost:5002/api' },
     db: { port: 5001, baseUrl: 'http://localhost:5001/api' },
-    ai: { port: 5003, baseUrl: 'http://localhost:5003/api' },
-    payment: { port: 5004, baseUrl: 'http://localhost:5004/api' },
-    notification: { port: 5005, baseUrl: 'http://localhost:5005/api' },
-    metrics: { port: 5006, baseUrl: 'http://localhost:5006/api' }
+    ai: { port: 5000, baseUrl: 'http://localhost:5000/api' },
+    payment: { port: 3004, baseUrl: 'http://localhost:3004/api' },
+    notification: { port: 4003, baseUrl: 'http://localhost:4003/api' },
+    metrics: { port: 5005, baseUrl: 'http://localhost:5005/api' }
 };
 
 // Utility functions

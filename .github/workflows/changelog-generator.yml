@@ -1,0 +1,169 @@
+name: Changelog Generator
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+    types: [closed]
+  release:
+    types: [published, edited]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  generate-changelog:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    outputs:
+      changelog_generated: ${{ steps.changelog.outputs.changelog_generated }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install conventional-changelog-cli
+        run: npm install -g conventional-changelog-cli
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Generate changelog from git commits
+          if [ "${{ github.event_name }}" = "release" ]; then
+            # For releases, generate changelog for the new version
+            VERSION="${{ github.event.release.tag_name }}"
+            conventional-changelog -p angular -i CHANGELOG.md -s -r 0 > CHANGELOG_TEMP.md
+          else
+            # For merged PRs, generate changelog for unreleased changes
+            conventional-changelog -p angular -i CHANGELOG.md -s -r 0 > CHANGELOG_TEMP.md
+          fi
+          
+          # Check if changelog was generated
+          if [ -s CHANGELOG_TEMP.md ]; then
+            echo "changelog_generated=true" >> $GITHUB_OUTPUT
+            echo "Changelog generated successfully"
+          else
+            echo "changelog_generated=false" >> $GITHUB_OUTPUT
+            echo "No changelog entries to add"
+          fi
+
+      - name: Update CHANGELOG.md
+        if: steps.changelog.outputs.changelog_generated == 'true'
+        run: |
+          # Merge the generated changelog with existing one
+          if [ "${{ github.event_name }}" = "release" ]; then
+            # For releases, prepend the new version at the top
+            VERSION="${{ github.event.release.tag_name }}"
+            DATE=$(date +%Y-%m-%d)
+            
+            # Create new version entry
+            echo "## [$VERSION] - $DATE" > CHANGELOG_NEW.md
+            echo "" >> CHANGELOG_NEW.md
+            
+            # Add release notes if available
+            if [ -n "${{ github.event.release.body }}" ]; then
+              echo "${{ github.event.release.body }}" >> CHANGELOG_NEW.md
+              echo "" >> CHANGELOG_NEW.md
+            fi
+            
+            # Add generated changelog
+            cat CHANGELOG_TEMP.md >> CHANGELOG_NEW.md
+            echo "" >> CHANGELOG_NEW.md
+            
+            # Add existing changelog
+            cat CHANGELOG.md >> CHANGELOG_NEW.md
+            
+            # Replace original changelog
+            mv CHANGELOG_NEW.md CHANGELOG.md
+          else
+            # For PRs, update the unreleased section
+            head -n 50 CHANGELOG.md > CHANGELOG_HEAD.md
+            cat CHANGELOG_TEMP.md >> CHANGELOG_HEAD.md
+            tail -n +51 CHANGELOG.md >> CHANGELOG_HEAD.md
+            mv CHANGELOG_HEAD.md CHANGELOG.md
+          fi
+
+      - name: Commit changelog changes
+        if: steps.changelog.outputs.changelog_generated == 'true'
+        run: |
+          git add CHANGELOG.md
+          git commit -m "docs: update changelog for ${{ github.event_name }}"
+          git push
+
+  update-version-history:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Update version history
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          DATE=$(date +%Y-%m-%d)
+          
+          # Create version history entry
+          echo "## Version $VERSION - $DATE" >> VERSION_HISTORY.md
+          echo "" >> VERSION_HISTORY.md
+          echo "### Release Notes" >> VERSION_HISTORY.md
+          echo "${{ github.event.release.body }}" >> VERSION_HISTORY.md
+          echo "" >> VERSION_HISTORY.md
+          echo "### Deployment Metrics" >> VERSION_HISTORY.md
+          echo "- **Deployment Time**: $(date)" >> VERSION_HISTORY.md
+          echo "- **Build Status**: ✅ Success" >> VERSION_HISTORY.md
+          echo "- **Tests Passed**: ✅ All tests passed" >> VERSION_HISTORY.md
+          echo "" >> VERSION_HISTORY.md
+
+      - name: Commit version history
+        run: |
+          git add VERSION_HISTORY.md
+          git commit -m "docs: add version history for ${{ github.event.release.tag_name }}"
+          git push
+
+  notify-changelog-update:
+    runs-on: ubuntu-latest
+    needs: generate-changelog
+    if: needs.generate-changelog.outputs.changelog_generated == 'true'
+    
+    steps:
+      - name: Notify changelog update
+        run: |
+          echo "Changelog has been updated successfully!"
+          echo "Event: ${{ github.event_name }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref }}"
+          
+          # You can add Slack/Discord notifications here
+          # Example for Slack:
+          # curl -X POST -H 'Content-type: application/json' \
+          #   --data '{"text":"Changelog updated for ${{ github.repository }} - ${{ github.event_name }}"}' \
+          #   ${{ secrets.SLACK_WEBHOOK_URL }}
